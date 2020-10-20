@@ -97,7 +97,7 @@ module ShopifyAPI
           RUBY_EVAL
         end
       rescue => e
-        logger&.error("Couldn't set prefix: #{e}\n  #{code}")
+        logger.try(:error, "Couldn't set prefix: #{e}\n  #{code}")
         raise
       end
 

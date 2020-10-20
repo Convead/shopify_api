@@ -2,8 +2,5 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "activeresource", "~> 5.1"
-
-group :docs, optional: true do
-  gem "jekyll"
-end
+# Use Gemfile for ar41
+gem "activeresource", "4.1.0"

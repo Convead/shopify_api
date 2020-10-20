@@ -24,7 +24,7 @@ module ShopifyAPI
           schema_file = schema_location.join("#{api_version}.json")
 
           if !schema_file.exist?
-            raise InvalidClient, <<~MSG
+            raise InvalidClient, <<-MSG
               Client for API version #{api_version} does not exist because no schema file exists at `#{schema_file}`.
 
               To dump the schema file, use the `rake shopify_api:graphql:dump` task.

@@ -5,7 +5,7 @@ namespace :shopify_api do
   namespace :graphql do
     desc 'Dumps a local JSON schema file of the Shopify Admin API'
     task :dump do
-      usage = <<~USAGE
+      usage = <<-USAGE
 
         Usage: rake shopify_api:graphql:dump [<args>]
 

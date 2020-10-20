@@ -11,7 +11,7 @@ module ShopifyAPI
       ShopifyAPI::Base.version_validation!(MINIMUM_VERSION)
 
       if scope == :all
-        order_id = args.first&.dig(:params, :order_id)
+        order_id = args.first.try(:[], :params).try(:[], :order_id)
         raise ShopifyAPI::ValidationException, "'order_id' is required" if order_id.blank?
 
         order = ::ShopifyAPI::Order.new(id: order_id)
@@ -120,7 +120,7 @@ module ShopifyAPI
     private
 
     def load_keyed_fulfillment_order(keyed_fulfillment_orders, key)
-      if keyed_fulfillment_orders[key]&.attributes
+      if keyed_fulfillment_orders[key].try(:attributes)
         load(keyed_fulfillment_orders[key].attributes, false, true)
       end
     end
@@ -129,8 +129,11 @@ module ShopifyAPI
       return load_attributes_from_response(response) if response.code != '200'
 
       keyed_fulfillment_orders = ActiveSupport::JSON.decode(response.body)
-      keyed_fulfillment_orders.transform_values do |fulfillment_order_attributes|
-        FulfillmentOrder.new(fulfillment_order_attributes) if fulfillment_order_attributes
+      keyed_fulfillment_orders.reduce({}) do |memo, pair|
+        order, fulfillment_order_attributes = pair
+        value = FulfillmentOrder.new(fulfillment_order_attributes) if fulfillment_order_attributes
+        memo[order] = value
+        memo
       end
     end
   end

@@ -3,7 +3,6 @@ require 'minitest/autorun'
 require 'webmock/minitest'
 require_relative 'lib/webmock_extensions/last_request'
 require 'mocha/minitest'
-require 'pry'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))

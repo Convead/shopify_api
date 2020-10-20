@@ -31,3 +31,49 @@ if ShopifyAPI::Base.respond_to?(:connection_class)
 else
   require 'active_resource/connection_ext'
 end
+
+############################################
+### Add methods that missing in ruby 2.2 ###
+############################################
+
+### Runtine dependency (activeresource and graphql-client) uses some method from ruby 2.4 so we need to port ones
+
+class String
+  def -@
+    self.frozen? ? self : self.clone.freeze
+  end
+end
+
+class Regexp
+  def match?(str)
+    !!match(str)
+  end
+end
+
+class Fixnum
+  def clone
+    self
+  end
+end
+
+class TrueClass
+  def clone
+    self
+  end
+end
+
+class FalseClass
+  def clone
+    self
+  end
+end
+
+class NilClass
+  def clone
+    self
+  end
+end
+############################################
+############################################
+############################################
+
