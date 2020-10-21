@@ -5,6 +5,8 @@ Shopify API
 [gem]: https://img.shields.io/gem/v/shopify_api.svg
 [gem_url]: https://rubygems.org/gems/shopify_api
 
+**ATTENSION: use branch `9.2.0_for_ruby22_and_activeresource41` for Convead application.**
+
 The Shopify API gem allows Ruby developers to access the admin section of Shopify stores programmatically.
 
 The best way to consume the Shopify API is through GraphQL, which enables high volume mutations, bulk operations, and access to all new features.
@@ -85,13 +87,13 @@ ShopifyAPI sessions need to be configured with a fully authorized URL of a parti
 
 ### 1) Create an app
 
-First, create a new application in either the partners admin or your store admin. 
+First, create a new application in either the partners admin or your store admin.
 
 **Private apps** are used for merchant-owned scripts and apps that run silently in the background on a single shop. Private apps aren't able to render any content in the admin. Private apps are created through the store admin.
 
 **Custom apps** are also used for a single shop, but they have access to [app extensions](https://shopify.dev/docs/app-extensions) that allow the app to render content in the admin and are managed and created through the partners dashboard.
 
-**Public apps** can be installed on many stores, and can be added to the Shopify App Store to generate revenue for the developer. 
+**Public apps** can be installed on many stores, and can be added to the Shopify App Store to generate revenue for the developer.
 
 For a private app, you'll need the API_KEY and the PASSWORD; otherwise, you'll need the API_KEY and SHARED_SECRET.
 
@@ -110,7 +112,7 @@ For a private App you just need to set the base site url as follows:
    That's it; you're done! Next, skip to step 6 and start using the API!
 
 ### 2B) Public and Custom Apps
-   
+
    For public and custom apps, you will need to supply two parameters to the Session class before you instantiate it:
 
    ```ruby
@@ -128,11 +130,11 @@ Public and Custom apps need an access token from each shop to access that shop's
    ```ruby
    # We need to instantiate the session object before using it
    shopify_session = ShopifyAPI::Session.new(domain: "SHOP_NAME.myshopify.com", api_version: api_version, token: nil)
-   
+
 # Then, create a permission URL with the session
    permission_url = shopify_session.create_permission_url(scope, "https://my_redirect_uri.com", { state: "My Nonce" })
    ```
-   
+
 After creating the permission URL, the user should be directed to this URL to approve the app.
 
 Under the hood, the `create_permission_url` method is preparing the app to make the following request :
@@ -165,8 +167,8 @@ Once authorized, the shop redirects the owner to the return URL of your applicat
    token = shopify_session.request_token(params)
    ```
 
-   This method will save the token to the session object and return it. All fields returned by Shopify, other than the access token itself, are stored in the session's `extra` attribute. For a list of all fields returned by Shopify, read [our OAuth documentation](https://shopify.dev/tutorials/authenticate-with-oauth#confirming-installation). 
-   
+   This method will save the token to the session object and return it. All fields returned by Shopify, other than the access token itself, are stored in the session's `extra` attribute. For a list of all fields returned by Shopify, read [our OAuth documentation](https://shopify.dev/tutorials/authenticate-with-oauth#confirming-installation).
+
    If you prefer to exchange the token manually, you can make a POST request to the shop with the following parameters :
 
    ```
@@ -196,7 +198,7 @@ Once authorized, the shop redirects the owner to the return URL of your applicat
    1) The list of scopes in `shopify_session.extra['scope']` is the same as you requested.
    2) If you requested an online-mode access token, `shopify_session.extra['associated_user']` must be present.
    Failing either of these tests means the end-user may have tampered with the URL parameters during the OAuth authentication phase. You should avoid using this access token and revoke it immediately. If you use the [`omniauth-shopify-oauth2`](https://github.com/Shopify/omniauth-shopify-oauth2) gem, these checks are done automatically for you.
-   
+
 ### 5) Activating the session
 
 Once you have a token, simply pass in the `token` and `extra` hash (optional) when creating the session object:
@@ -331,7 +333,7 @@ If you were previously using Shopify's [activeresource fork](https://github.com/
 
 ## Bulk Operations
 
-With the GraphQL Admin API, you can use bulk operations to asynchronously fetch data in bulk. The API is designed to reduce complexity and improve performance when dealing with large volumes of data. 
+With the GraphQL Admin API, you can use bulk operations to asynchronously fetch data in bulk. The API is designed to reduce complexity and improve performance when dealing with large volumes of data.
 
 Instead of manually paginating results and managing a client-side throttle, you can instead run a bulk query operation. Shopify’s infrastructure does the hard work of executing your query, and then provides you with a URL where you can download all of the data.
 
@@ -463,7 +465,7 @@ end
 
 ## Pagination
 
-Shopify uses [Relative cursor-based pagination](https://shopify.dev/tutorials/make-paginated-requests-to-rest-admin-api) to provide more than a single page of results. 
+Shopify uses [Relative cursor-based pagination](https://shopify.dev/tutorials/make-paginated-requests-to-rest-admin-api) to provide more than a single page of results.
 
 ```ruby
 products = ShopifyAPI::Product.find(:all, params: { limit: 50 })
